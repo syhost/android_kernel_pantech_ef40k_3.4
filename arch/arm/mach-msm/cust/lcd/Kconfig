@@ -1,0 +1,355 @@
+##################################################################################
+# PANTECH_LCD
+##################################################################################
+
+# lived, 2013.03.20 add again by the following patch
+# https://www.codeaurora.org/gitweb/quic/la/?p=kernel/msm.git;a=commit;h=548ff607d8d20792203260e0d74e013b43ea3781
+config PANTECH_LCD_SUPPORT_FRAMEWORK_RESET_WHEN_LCD_OFF
+	bool
+	default y
+
+# lived 2013.04.04 add patch from codeaurora
+config PANTECH_LCD_QC_PATCH_MDP4_MIXER_STAGE_COMMIT
+	bool
+	default y
+
+# lived 2013.06.04 known bandwidth problem fix
+config PANTECH_LCD_QCPATCH_FIX_KNOWN_BANDWIDTH_PROBLEM
+	bool
+	default y
+
+# lived, 2013.06.04 boot log in kernel
+config PANTECH_LCD_BOOT_LOGO_IN_KERNEL
+	bool
+	default y
+
+# lived, 2013.06.04 no cursor in boot
+config PANTECH_LCD_NO_CURSOR_IN_BOOT
+	bool
+	default y
+
+# lived, 2013.06.04 support old-style backlight function
+config PANTECH_LCD_SUPPORT_OLD_BACKLIGHT
+	bool
+	default y
+
+# lived, 2013.06.04 support 32bpp fb for logo
+config PANTECH_LCD_SUPPORT_32BPP_FB
+	bool
+	default y
+
+# lived, 2013.06.05 fix for alpha blending
+config PANTECH_LCD_FIX_ALPHA_BLENDING
+	bool
+	default y
+
+# lived, 2013.06.10 fix for flickering when overlay_unset with alpha-blended layer is called
+config PANTECH_LCD_FIX_FLICKER_WHEN_UNSET
+	bool
+	default y
+
+config PANTECH_LCD_SKYDISP_SUPPORT_OVERLAY_COMMIT
+	bool
+	default y
+
+# 130625 P14198 There is no sources with this define.
+config PANTECH_LCD_FIX_REFRESH_RATE
+	bool
+	default y
+
+# 130625 P14198 There is no sources with this define.
+config PANTECH_LCD_QBUG_FIX_MIPI_ERROR
+	bool
+	default y
+
+config PANTECH_FB_MSM_MHL_SII9244
+    depends on (PANTECH_EF39S_BOARD || PANTECH_EF40S_BOARD || PANTECH_EF40K_BOARD || PANTECH_EF65L_BOARD)
+	bool
+	default y
+
+config PANTECH_LCD_MHL_CABLE_DETECT
+	depends on (PANTECH_EF39S_BOARD || PANTECH_EF40S_BOARD || PANTECH_EF40K_BOARD || PANTECH_EF65L_BOARD)
+	bool
+	default y
+
+config PANTECH_LCD_MHL_SUSPEND_RESUME
+	depends on (PANTECH_EF39S_BOARD || PANTECH_EF40S_BOARD || PANTECH_EF40K_BOARD || PANTECH_EF65L_BOARD)
+	bool
+	default y
+
+config PANTECH_LCD_HDMI_NOTIFY_POWER_ON
+	depends on (PANTECH_EF39S_BOARD || PANTECH_EF40S_BOARD || PANTECH_EF40K_BOARD || PANTECH_EF65L_BOARD)
+	bool
+	default y
+
+# Not ported until now.
+config PANTECH_LCD_FORMAT_FOR_MHL_LIMIT
+	depends on (PANTECH_EF39S_BOARD || PANTECH_EF40S_BOARD || PANTECH_EF40K_BOARD || PANTECH_EF65L_BOARD)
+	bool
+	default y
+
+# 130620 p14198 temporary code for blue screen. only for 40, 65
+# IT MUST BE COMPLETED.
+# 130731 p14198 removed this.
+#config PANTECH_LCD_TEMP_CODE_FOR_BLUE_SCREEN
+#	bool
+#	default y
+
+
+# 130500 p14198 Remove unnessary code for initilizing lcd.
+config PANTECH_LCD_REMOVE_UNUSED_CODES_IN_BOARD_MSM8X60_C
+	bool
+	default y
+
+# ALSO USED IN FRAMEWORK
+# LCD Module Reset ##1199 Test Menu
+config PANTECH_LCD_FORCE_ONOFF
+	bool
+	default y
+
+# ALSO USED IN FRAMEWORK
+config PANTECH_LCD_RESET
+	bool
+	default y
+
+######################################################
+# owner : p14198         
+# date  : 2013.07.02 
+# PLM   : 
+# Case  :       
+# Description : veilview
+# kernel    : used
+# framework : used
+# modified files : See CUST_PANTECH_LCD.h
+# added files    :
+######################################################
+config PANTECH_LCD_VEIL_VIEW
+	depends on (PANTECH_EF33S_BOARD || PANTECH_EF34K_BOARD || PANTECH_EF34C_BOARD || PANTECH_EF35L_BOARD)
+	bool
+	default y
+
+######################################################
+# 20130710, P14777, jang
+# Where defined : kernel 
+# PLM  : 
+# Case : .
+# Description : can't turnon the lcd when enter the recovery mode & offlinecharging mode
+# Related files :
+# ./kernel/driver/video/msm/mipi_dsi.c
+# Added files    :no added
+######################################################/
+
+config PANTECH_LCD_FIX_TURNON_PANEL_ULPS
+	depends on (PANTECH_EF39S_BOARD || PANTECH_EF40S_BOARD || PANTECH_EF40K_BOARD || PANTECH_EF65L_BOARD)
+	bool
+	default y 
+
+######################################################
+# 20130710, P14777, jang
+# Where defined : kernel, cust 
+# PLM  : 
+# Case : .
+# Description : when use minui (in recovery/minui/), if you set 24bit RGBX, underrun occured, so 
+#               so set mdp clock max on gr_blank.
+# Related files :
+# ./kernel/driver/video/msm/msm_fb.c
+# ./kernel/include/linux/msm_mdp.h
+# ./bootable/recovery/minui/graphics.c
+# Added files    :no added
+######################################################/
+config PANTECH_LCD_RECOVERY_MINUI_USED
+	bool
+	default y
+
+######################################################
+# 20130710, p14198, Choi SeungYong
+# Where defined : lk, kernel, framework
+# PLM  : 
+# Case : 
+# Description : Display rebooting image with abnormal rebooting / Boot silently with abnormal rebooting and lcd off.
+# Related files :
+# /lk/platform/msm8x60/panel.c
+# /kernel/drivers/video/msm/msm_fb.c
+# /kernel/arch/arm/mach-msm/sky_sys_reset.c, sky_sys_reset.h
+# /build/target/product/core.mk
+# Added files : /system/core/rootdir/reboot_33.rle, reboot_39.rle
+######################################################/
+config PANTECH_LCD_SILENT_BOOT
+	bool
+	default y
+
+######################################################
+# 20130710, p14198, Choi SeungYong
+# Where defined : kernel, framework
+# PLM  : 
+# Case : 
+# Description : Display offline charing image in kernel when offline charging mode.
+# Related files : 
+# /kernel/drivers/video/msm/msm_fb.c
+# /build/target/product/core.mk
+# Added files : /system/core/rootdir/usb_connected_33.rle, usb_connected_39.rle
+######################################################/
+config PANTECH_LCD_DISPLAY_OFFLINE_CHARGING_IMAGE_IN_KERNEL
+	bool
+	default y
+
+######################################################
+# 20130710, p14198, Choi SeungYong
+# Where defined : 
+# PLM  : 
+# Case : 
+# Description : Fixed vsync error when restart only android except kernel.
+# This issue occured in encrption test(this restart only android.). I think that another restating android could make this issue.
+# If met the issue, "FATAL:vsync_loop:timestamp data not in correct format" in hwcomposer is printed repeatedly in logcat.
+# Related files : /kernel/drivers/video/msm/mdp4_overlay_dsi_video.c
+# Added files : 
+######################################################/
+config PANTECH_LCD_FIX_VSYNC_ERROR_WHEN_RESTART_ONLY_ANDROID
+	bool
+        default y
+
+######################################################
+# 20130711, p14198, Choi SeungYong
+# Where defined : 
+# PLM  : 
+# Case : 
+# Description : Change MDP bus bandwidth for blocking MDP underrun
+# Related files : /kernel/arch/arm/mach-msm/board-msm8x60.c
+# Added files : 
+######################################################/
+config PANTECH_LCD_CHANGE_MDP_BUS_BW
+	depends on (PANTECH_EF39S_BOARD || PANTECH_EF40S_BOARD || PANTECH_EF40K_BOARD || PANTECH_EF65L_BOARD)
+	bool
+	default y
+      
+######################################################
+# 20130724, p14198, Choi SeungYong
+# Where defined : 
+# PLM  : 
+# Case : 
+# Description : Don't use blt mode(write back) because if use it, we met some issues historically.
+# Related files : /kernel/drivers/video/msm/mdp4_overlay.c
+# Added files : 
+######################################################/
+config PANTECH_LCD_BLOCK_BLT_MODE
+	bool
+	default y
+      
+
+######################################################
+# 20130722, p16603, Kim.HG
+# Where defined : kernel, sky_ctrl_drv
+# PLM  :
+# Case :
+# Description : Add sharpness control
+# Related files :
+# ./kernel/drivers/video/msm/mdp4_overlay.c
+# ./kernel/drivers/video/msm/msm_fb.c
+# ./vendor/pantech/frameworks/sky_ctrl_drv/java/com/pantech/test/Sky_ctrl_drv.java
+# ./vendor/pantech/frameworks/sky_ctrl_drv/jni/sky_ctrl_drv.cpp
+# added files    :no added
+######################################################
+config PANTECH_LCD_SHARPNESS_CTRL
+	bool
+	default y
+
+######################################################
+# 20130813, p16603, Kim.HG
+# Where defined : kernel
+# PLM  :
+# Case :
+# Description : Fix abnormal reset when connect mhl
+# Related files :
+# ./kernel/drivers/video/msm/msm_fb.c
+# added files    :no added
+######################################################
+config PANTECH_BUG_FIX_WHEN_CONNECT_MHL
+    bool
+    default y
+
+
+######################################################
+# 20130813, p16603, Kim.HG
+# Where defined : kernel
+# PLM  :
+# Case :
+# Description : Fix underrun when using fb with mhl.
+#				Force gpu clock increase when gpu clock is minimum.
+# Related files :
+# ./kernel/drivers/gpu/msm/kgsl_pwrctrl.c
+# added files    :no added
+######################################################
+config PANTECH_FIX_UNDERRUN_WHEN_USING_FB_WITH_MHL
+	depends on (PANTECH_EF39S_BOARD || PANTECH_EF40S_BOARD || PANTECH_EF40K_BOARD || PANTECH_EF65L_BOARD)
+    bool
+    default y
+
+######################################################
+# 20130822, p12512, SH Kwak
+# Where defined : kernel
+# PLM  :
+# Case :
+# Description : Prevent lcd noise screen when resuming the lcd
+# Related files :
+# ./kernel/drivers/video/msm/msm_fb.c
+# added files    :no added
+######################################################
+config PANTECH_LCD_PREVENT_UNSTABLE_LCD_RESUME
+	depends on (PANTECH_EF39S_BOARD)
+    bool
+    default y
+
+######################################################
+# 20130822, p12512, SH Kwak
+# Where defined : kernel
+# PLM  :
+# Case :
+# Description : make lcd onoff force for test on EF39S. disable in mainline
+# Related files :
+# ./kernel/drivers/video/msm/msm_fb.c ,mipi_samsung.c
+# added files    :no added
+######################################################
+#config PANTECH_LCD_FORCE_ONOFF_SYSFS
+#	depends on (PANTECH_EF39S_BOARD)
+#	bool
+#	default y
+
+######################################################
+# 20130904, p14198, Choi SeungYong
+# Where defined : 
+# PLM  : 
+# Case : 
+# Description : Increase ION MM heap becuase of out of memory.
+# Related files : /kernel/arch/arm/mach-msm/board-msm8x60.c
+# Added files : 
+######################################################/
+config PANTECH_LCD_INCREASE_ION_MM_HEAP
+	bool
+	default y
+######################################################
+# 20131014,  p14777, JANG
+# Where defined : 
+# PLM  :#00579 
+# Case :  
+# Description : when board is rebooting, MIPI cmd can't be sended. so applied work-arround code that turn off the lcd before i2c-device shutdown.
+# Related files : kernel/driver/video/msm/mipi_samsung.c, kernel/kernel/sys.c kernel/arch/arm/board-msm8x60.c
+# added files   :
+######################################################
+config PANTECH_LCD_TURN_BACKLIGHT_OFF_WHEN_REBOOT_BEFORE_I2C_DEVICE_SHUTDOWN
+	depends on (PANTECH_EF39S_BOARD)
+	bool
+	default y
+######################################################
+# 20131014,  p14777, JANG
+# Where defined : 
+# PLM  :#00486 ef40k
+# Case :  
+# Description : when board is rebooting, MIPI cmd can't be sended. so applied work-arround code that turn off the lcd before i2c-device shutdown.
+# Related files : kernel/driver/video/msm/mipi_samsung.c, kernel/kernel/sys.c kernel/arch/arm/board-msm8x60.c
+# added files   :
+######################################################
+config PANTECH_LCD_DISABLE_CONSOLE_LOCK
+	bool
+	default y
+
+

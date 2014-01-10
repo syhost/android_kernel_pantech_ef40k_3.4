@@ -1,0 +1,346 @@
+if CUST_PANTECH_H
+
+#
+# CUST PANTECH CONFIG SECTION
+#
+
+source "arch/arm/mach-msm/cust/lcd/Kconfig" # PANTECH_LCD
+
+menu "CUST PANTECH CONFIG SECTION"
+
+config PANTECH
+        bool "PANTECH Common Configuration"
+        default y
+        help
+                Support PANTECH
+
+config PANTECH_EF33S_BOARD
+        depends on MACH_MSM8X60_EF33S
+        bool "PANTECH_EF33S_BOARD Configuration"
+        default y
+	select SKYSND_USE_EXTAMP
+	select SKYSND_CTRL
+	select SKY_SND_AUTOANSWER
+	select SKY_SND_MVS
+	select SKY_SND_MVS_PCM
+	select SKYSND_VRMODE
+        help
+                Support EF33S Board
+
+config PANTECH_EF34K_BOARD
+        depends on MACH_MSM8X60_EF34K
+        bool "PANTECH_EF34K_BOARD Configuration"
+        default y
+	select SKYSND_USE_EXTAMP
+	select SKYSND_CTRL
+	select SKY_SND_AUTOANSWER
+	select SKYSND_VRMODE
+        help
+                Support EF34K Board
+
+config PANTECH_EF34C_BOARD
+        depends on MACH_MSM8X60_EF34C
+        bool "PANTECH_EF34C_BOARD Configuration"
+        default y
+	select SKYSND_USE_EXTAMP
+	select SKYSND_CTRL
+	select SKY_SND_AUTOANSWER
+	select SKYSND_VRMODE
+        help
+                Support EF34C Board
+
+config PANTECH_EF35L_BOARD
+        depends on MACH_MSM8X60_EF35L
+        bool "PANTECH_EF35L_BOARD Configuration"
+        default y
+	select SKYSND_USE_EXTAMP
+	select SKYSND_CTRL
+	select SKY_SND_AUTOANSWER
+	select SKY_SND_MVS
+	select SKY_SND_MVS_PCM
+	select SKY_SND_MVS_AMR
+	select SKYSND_VRMODE	
+        help
+                Support EF35L Board
+
+config PANTECH_EF39S_BOARD
+        depends on MACH_MSM8X60_EF39S
+        bool "PANTECH_EF39S_BOARD Configuration"
+        default y
+	select SKY_SND_EXTAMP
+	select SKY_SND_CTRL
+	select SKY_SND_VT_VOIP
+#	select SKY_SND_MVS
+	select SKY_SND_AUTOANSWER
+	select SKY_SND_VRMODE
+	select SKY_SND_VT_BT_SCO
+        help
+                Support EF39S Board
+
+config PANTECH_EF40S_BOARD
+        depends on MACH_MSM8X60_EF40S
+        bool "PANTECH_EF40S_BOARD Configuration"
+        default y
+	select SKY_SND_EXTAMP
+	select SKY_SND_CTRL
+	select SKY_SND_VT_VOIP
+#	select SKY_SND_MVS
+	select SKY_SND_AUTOANSWER
+	select SKY_SND_VRMODE
+	select SKY_SND_VT_BT_SCO
+        help
+                Support EF40S Board
+
+config PANTECH_EF40K_BOARD
+        depends on MACH_MSM8X60_EF40K
+        bool "PANTECH_EF40K_BOARD Configuration"
+        default y
+	select SKY_SND_EXTAMP
+	select SKY_SND_CTRL
+	select SKY_SND_VT_VOIP
+#	select SKY_SND_MVS
+	select SKY_SND_AUTOANSWER
+	select SKY_SND_VRMODE
+        help
+                Support EF40K Board
+
+config PANTECH_EF65L_BOARD
+        depends on MACH_MSM8X60_EF65L
+        bool "PANTECH_EF65L_BOARD Configuration"
+        default y
+	select SKY_SND_EXTAMP
+	select SKY_SND_CTRL
+	select SKY_SND_VT_VOIP
+#	select SKY_SND_MVS
+	select SKY_SND_AUTOANSWER
+	select SKY_SND_VRMODE
+	select SKY_SND_VT_BT_SCO
+        help
+                Support EF65L Board
+
+config PANTECH_USER_BUILD
+        bool "Pantech User Build Target"
+        default n
+       help
+         The PANTECH_USER_BUILD is true if you configure build to user.
+
+config PANTECH_GSBI12_UART_CONSOLE
+	bool "Pantech GSBI12 UART Console Configuration"
+	default y
+	help
+		Support GSBI12 UART Console
+
+
+config SKY_CHARGING
+        depends on PANTECH
+        bool "SKY CHARGING Configuration"
+        default n
+        help
+                Support SKY CHARGING
+
+
+##################################################################################
+# PANTECH ERR LOGGING &DUMP START
+##################################################################################
+
+#############
+# ALLWAYS ON #
+#############
+
+config PANTECH_RESET_REASON
+    bool "PANTECH Reset Reason"
+    default y
+
+config PANTECH_ERR_CRASH_LOGGING
+	bool
+	default y
+
+#############################################
+# SELECTIVELY ON - you only touch this section for user build #
+#############################################
+
+# if you want to change DEBUG-MODE when environment are user-build-mode,
+# you just change the value which described default section. (y -> n)
+
+if PANTECH_USER_BUILD
+config PANTECH_DEBUG_ON
+    bool
+    default n    
+    select PANTECH_DEBUG
+    help
+        this config is dummy. you do not use this config.
+        this config is used to just delete few configure when build environment is user-build-mode.
+endif
+
+# this is for ENG-MODE - you do not touch this section, eng-mode always needs this configuration.
+
+if !PANTECH_USER_BUILD
+config PANTECH_DEBUG_ON
+    bool
+    default y    
+    select PANTECH_DEBUG
+    help
+        this config is dummy. you do not use this config.
+        this config is used to just delete few configure when build environment is user-build-mode.
+endif
+
+########################################
+# switched on/off according to PANTECH_DEBUG_ON #
+########################################
+
+config PANTECH_DEBUG
+    bool "PANTECH Debug Configuration"
+    default n
+    select PANTECH_ERR_CRASH_LOGGING
+    select PANTECH_DEBUG_SCHED_LOG
+    select PANTECH_DEBUG_IRQ_LOG
+    select PANTECH_DEBUG_DCVS_LOG
+    select PANTECH_DEBUG_RPM_LOG
+
+config PANTECH_DEBUG_SCHED_LOG
+    bool
+    depends on PANTECH_DEBUG
+    default n
+
+config PANTECH_DEBUG_IRQ_LOG
+    bool
+    depends on PANTECH_DEBUG
+    default n   
+
+config PANTECH_DEBUG_DCVS_LOG
+    bool
+    depends on PANTECH_DEBUG
+    default n   
+
+config PANTECH_DEBUG_RPM_LOG
+    bool
+    depends on PANTECH_DEBUG
+    default n
+
+##################################################################################
+# PANTECH ERR LOGGING &DUMP END
+##################################################################################
+
+##################################################################################
+# SKY SND KERNEL FEATURE START
+##################################################################################
+config SKYSND_USE_EXTAMP
+        bool 
+
+config SKYSND_CTRL
+        bool 
+
+config SKY_SND_EXTAMP
+        bool 
+        
+config SKY_SND_CTRL
+        bool 
+
+config SKY_SND_VT_VOIP
+        bool 
+        
+config SKY_SND_MVS_AMR
+        bool 
+
+config SKY_SND_MVS_PCM
+        bool 
+
+config SKY_SND_MVS
+        bool 
+
+config SKY_SND_AUTOANSWER
+        bool	
+
+config SKY_SND_VRMODE
+        bool	
+
+config SKYSND_VRMODE
+        bool
+
+config SKY_SND_VT_BT_SCO
+        bool
+##################################################################################
+# SKY SND KERNEL FEATURE END
+##################################################################################
+
+config PANTECH_ANDROID_USB
+  tristate "pantech function drivers"
+  default y
+  help
+    Say "y" to link the driver statically, or "m" to build
+    as a part of "g_android"
+
+config PANTECH_ANDROID_OBEX
+  tristate "support USB OBEX Functionality"
+  default y
+  help
+    Say "y" to link the driver statically, or "m" to build
+    as a part of "g_android"
+	
+config PANTECH_ANDROID_FACTORY_MODE
+  tristate "supports Pantech FACTROY Driver"
+  default y
+  help
+    Say "y" to link the driver statically, or "m" to build
+    as a part of "g_android"
+    
+##################################################################################
+# PANTECH_PDL_DLOAD
+##################################################################################
+
+config PANTECH_PDL_DLOAD
+       bool "pantech pdl dload"
+       default y
+       help
+        We use the "FEATURE_PANTECH_PDL_DLOAD" feature in System area. There is in "vendor/pantech/build/cust_pantech.h" .
+
+##################################################################################
+# PANTECH WLAN
+##################################################################################
+
+menu "PANTECH WLAN"
+comment "WLAN COMMON"
+config SKY_WLAN_BCM4329
+	bool "WLAN BCM4329"
+	depends on (MACH_MSM8X60_EF33S) || (MACH_MSM8X60_EF34K) || (MACH_MSM8X60_EF35L) || (MACH_MSM8X60_EF34C)
+	help
+		Support WLAN BCM
+
+config WIFI_CONTROL_FUNC_BCM4329
+	bool "WLAN BCM4329 Control Func"
+	depends on (MACH_MSM8X60_EF33S) || (MACH_MSM8X60_EF34K) || (MACH_MSM8X60_EF35L) || (MACH_MSM8X60_EF34C)
+	help
+		Support WLAN BCM
+
+config WIFI_MEM_PREALLOC_BCM4329
+	bool "BCM4329 WiFI Memory Pre Allocate"
+	depends on (MACH_MSM8X60_EF33S) || (MACH_MSM8X60_EF34K) || (MACH_MSM8X60_EF35L) || (MACH_MSM8X60_EF34C)
+	help
+		Support WLAN BCM
+	
+config SKY_WLAN_BCM4330
+	bool "WLAN BCM4330"
+	depends on (MACH_MSM8X60_EF39S) || (MACH_MSM8X60_EF40S) || (MACH_MSM8X60_EF40K) || (MACH_MSM8X60_EF65L)
+	default y
+	help
+		Support WLAN BCM
+config WIFI_CONTROL_FUNC_BCM4330
+	bool "WLAN BCM4329 Control Func"
+	depends on (MACH_MSM8X60_EF39S) || (MACH_MSM8X60_EF40S) || (MACH_MSM8X60_EF40K) || (MACH_MSM8X60_EF65L)
+	default y
+	help
+		Support WLAN BCM
+
+config WIFI_MEM_PREALLOC_BCM4330
+	bool "BCM4329 WiFI Memory Pre Allocate"
+	depends on (MACH_MSM8X60_EF39S) || (MACH_MSM8X60_EF40S) || (MACH_MSM8X60_EF40K) || (MACH_MSM8X60_EF65L)
+	default y
+	help
+		Support WLAN BCM
+		
+endmenu
+
+
+endmenu
+
+endif
