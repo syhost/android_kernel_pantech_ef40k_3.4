@@ -21,7 +21,7 @@ export CROSS_COMPILE=/home/android/CM11/prebuilt/linux-x86/toolchain/linaro-4.7/
 # make zImage
 ##############################################################################
 mkdir -p ./obj/KERNEL_OBJ/
-make ARCH=arm O=./obj/KERNEL_OBJ/ IM-A810K_defconfig
+make ARCH=arm O=./obj/KERNEL_OBJ/ IM-A800S_defconfig
 make -j8 ARCH=arm O=./obj/KERNEL_OBJ/
 
 ##############################################################################
